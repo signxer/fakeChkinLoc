@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打卡页面</title>
+    <style>
+        body {
+            margin: 20px;
+        }
+        .container {
+            width: 800px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: transparent;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+        }
+        .stat {
+            display: flex;
+            justify-content: space-between;
+        }
+        .editable {
+            cursor: pointer;
+        }
+        .addrinfo {
+            color: #979797;
+            font-size: 14px;
+            margin-top: 3px;
+            margin-left: 5px;
+        }
+        .circle {
+            width: 12px; /* 可以根据需要调整圆形的大小 */
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #2d684b, #4ba277);
+            border: 1px solid #e4e7fd;
+        }
+        .textdiv{
+            margin-bottom: 10px;
+        }
+        .circlediv{
+            margin-top: 3px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="circlediv"><div class="circle"></div></div>
+        <div>
+            <div class="textdiv">打卡时间: <span style="margin-left:5px;font-weight: bold;color:#2a6446;" class="editable" id="time1" onclick="editContent(this)">2024-05-10 14:27:49</span></div>
+            <div class="textdiv">签退时间: <span style="margin-left:5px;font-weight: bold;color:#2a6446;" class="editable" id="time2" onclick="editContent(this)">2024-05-10 14:44:33</span></div>
+            <div class="textdiv">外出时间: <span style="margin-left:5px;font-weight: bold;" id="difference">0天0时16分44秒</span></div>
+            <div class="textdiv">拜访客户: <span style="margin-left:5px;font-weight: bold;" class="editable" onclick="editContent(this)">邓老狗</span></div>
+            <div class="textdiv">工作成效: <span style="margin-left:5px;font-weight: bold;" class="editable" onclick="editContent(this)">存量维护，综合营销</span></div>
+            <div class="textdiv" style="display: inline-flex;width:360px;"><div class="svgicon"><svg t="1722678034236" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="16923" width="18" height="18"><path d="M593.792 952.746667C817.152 742.826667 930.133333 568.96 930.133333 426.666667c0-230.912-187.221333-418.133333-418.133333-418.133334C281.088 8.533333 93.866667 195.754667 93.866667 426.666667c0 142.293333 112.981333 316.16 336.341333 526.08a119.466667 119.466667 0 0 0 163.584 0z m-46.72-49.749334a51.2 51.2 0 0 1-70.144 0C266.24 704.981333 162.133333 544.768 162.133333 426.666667a349.866667 349.866667 0 1 1 699.733334 0c0 118.101333-104.106667 278.314667-314.794667 476.330666z" p-id="16924" fill="#979797"></path><path d="M512 631.466667a204.8 204.8 0 1 0 0-409.6 204.8 204.8 0 0 0 0 409.6z m0-68.266667a136.533333 136.533333 0 1 1 0-273.066667 136.533333 136.533333 0 0 1 0 273.066667z" p-id="16925" fill="#979797"></path></svg></div><div class="addrinfo"><span class="editable" onclick="editContent(this)">浙江省嘉兴市南湖区由拳路与车城东路交叉口西北50米</span></div></div>
+        </div>
+    </div>
+
+    <script>
+        function editContent(element) {
+            var newValue = prompt("请输入新的内容:", element.innerText);
+            if (newValue !== null) {
+                element.innerText = newValue;
+                // 获取时间字符串
+                let time1 = document.getElementById("time1").textContent;
+                let time2 = document.getElementById("time2").textContent;
+
+                // 计算时间差
+                let difference = calculateTimeDifference(time1, time2);
+
+                // 显示结果
+                document.getElementById("difference").textContent = difference;
+            }
+        }
+        function calculateTimeDifference(time1, time2) {
+            // 将时间字符串转换为Date对象
+            let date1 = new Date(time1);
+            let date2 = new Date(time2);
+
+            // 计算时间差（以毫秒为单位）
+            let diffInMs = Math.abs(date2 - date1);
+
+            // 转换为秒
+            let diffInSeconds = Math.floor(diffInMs / 1000);
+
+            // 计算天、小时、分钟和秒
+            let days = Math.floor(diffInSeconds / (24 * 3600));
+            diffInSeconds %= (24 * 3600);
+            let hours = Math.floor(diffInSeconds / 3600);
+            diffInSeconds %= 3600;
+            let minutes = Math.floor(diffInSeconds / 60);
+            let seconds = diffInSeconds % 60;
+
+            // 格式化输出
+            return `${days}天${hours}时${minutes}分${seconds}秒`;
+        }
+
+        // 获取时间字符串
+        let time1 = document.getElementById("time1").textContent;
+        let time2 = document.getElementById("time2").textContent;
+
+        // 计算时间差
+        let difference = calculateTimeDifference(time1, time2);
+
+        // 显示结果
+        document.getElementById("difference").textContent = difference;
+    </script>
+<script>
+function watermark(settings) {
+    //默认设置
+    var defaultSettings = {
+        watermark_txt: "text",
+        watermark_x: 35, //水印起始位置x轴坐标
+        watermark_y: 20, //水印起始位置Y轴坐标
+        watermark_rows: 20, //水印行数
+        watermark_cols: 40, //水印列数
+        watermark_x_space: 0, //水印x轴间隔
+        watermark_y_space: 50, //水印y轴间隔
+        watermark_color: '#e7e7e7', //水印字体颜色
+        watermark_alpha: 1, //水印透明度
+        watermark_fontsize: '10px', //水印字体大小
+        watermark_font: '微软雅黑', //水印字体
+        watermark_width: 160, //水印宽度
+        watermark_height: 80, //水印长度
+        watermark_angle: 20 //水印倾斜度数
+    };
+    if (arguments.length === 1 && typeof arguments[0] === "object") {
+        var src = arguments[0] || {};
+        for (key in src) {
+            if (src[key] && defaultSettings[key] && src[key] === defaultSettings[key]) continue;
+            else if (src[key]) defaultSettings[key] = src[key];
+        }
+    }
+    var oTemp = document.createDocumentFragment();
+    //获取页面最大宽度
+    var page_width = Math.max(document.body.scrollWidth, document.body.clientWidth);
+    var cutWidth = page_width * 0.0150;
+    var page_width = page_width - cutWidth;
+    //获取页面最大高度
+    var page_height = Math.max(document.body.scrollHeight, document.body.clientHeight) + 450;
+    page_height = Math.max(page_height, window.innerHeight - 30);
+    //如果将水印列数设置为0，或水印列数设置过大，超过页面最大宽度，则重新计算水印列数和水印x轴间隔
+    if (defaultSettings.watermark_cols == 0 || (parseInt(defaultSettings.watermark_x + defaultSettings.watermark_width * defaultSettings.watermark_cols + defaultSettings.watermark_x_space * (defaultSettings.watermark_cols - 1)) > page_width)) {
+        defaultSettings.watermark_cols = parseInt((page_width - defaultSettings.watermark_x + defaultSettings.watermark_x_space) / (defaultSettings.watermark_width + defaultSettings.watermark_x_space));
+        defaultSettings.watermark_x_space = parseInt((page_width - defaultSettings.watermark_x - defaultSettings.watermark_width * defaultSettings.watermark_cols) / (defaultSettings.watermark_cols - 1));
+    }
+    //如果将水印行数设置为0，或水印行数设置过大，超过页面最大长度，则重新计算水印行数和水印y轴间隔
+    if (defaultSettings.watermark_rows == 0 || (parseInt(defaultSettings.watermark_y + defaultSettings.watermark_height * defaultSettings.watermark_rows + defaultSettings.watermark_y_space * (defaultSettings.watermark_rows - 1)) > page_height)) {
+        defaultSettings.watermark_rows = parseInt((defaultSettings.watermark_y_space + page_height - defaultSettings.watermark_y) / (defaultSettings.watermark_height + defaultSettings.watermark_y_space));
+        defaultSettings.watermark_y_space = parseInt(((page_height - defaultSettings.watermark_y) - defaultSettings.watermark_height * defaultSettings.watermark_rows) / (defaultSettings.watermark_rows - 1));
+    }
+    var x;
+    var y;
+    for (var i = 0; i < defaultSettings.watermark_rows; i++) {
+        y = defaultSettings.watermark_y + (defaultSettings.watermark_y_space + defaultSettings.watermark_height) * i;
+        for (var j = 0; j < defaultSettings.watermark_cols; j++) {
+            x = defaultSettings.watermark_x + (defaultSettings.watermark_width + defaultSettings.watermark_x_space) * j;
+            var mask_div = document.createElement('div');
+            mask_div.id = 'mask_div' + i + j;
+            mask_div.className = 'mask_div';
+            mask_div.appendChild(document.createTextNode(defaultSettings.watermark_txt));
+            //设置水印div倾斜显示
+            mask_div.style.webkitTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+            mask_div.style.MozTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+            mask_div.style.msTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+            mask_div.style.OTransform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+            mask_div.style.transform = "rotate(-" + defaultSettings.watermark_angle + "deg)";
+            mask_div.style.visibility = "";
+            mask_div.style.position = "absolute";
+            mask_div.style.left = x + 'px';
+            mask_div.style.top = y + 'px';
+            mask_div.style.overflow = "hidden";
+            mask_div.style.zIndex = "-9999";
+            //让水印不遮挡页面的点击事件
+            mask_div.style.pointerEvents = 'none';
+            mask_div.style.opacity = defaultSettings.watermark_alpha;
+            mask_div.style.fontSize = defaultSettings.watermark_fontsize;
+            mask_div.style.fontFamily = defaultSettings.watermark_font;
+            mask_div.style.color = defaultSettings.watermark_color;
+            mask_div.style.textAlign = "center";
+            mask_div.style.width = defaultSettings.watermark_width + 'px';
+            mask_div.style.height = defaultSettings.watermark_height + 'px';
+            mask_div.style.display = "block";
+            oTemp.appendChild(mask_div);
+        };
+    };
+    document.body.appendChild(oTemp);
+}
+
+var watermarkText = prompt("请输入水印内容:", "");
+watermark({"watermark_txt":watermarkText});
+</script>
+</body>
+</html>
