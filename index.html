@@ -23,6 +23,7 @@
             background-color: rgb(248, 248, 248);
             min-height: 100vh;
             position: relative;
+            overflow: hidden;
         }
 
         .content {
@@ -32,7 +33,6 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            z-index: 1;
         }
 
         .month-header {
@@ -71,26 +71,47 @@
         }
 
         .calendar {
-            background-color: #fff;
             padding: 16px 20px;
             border-bottom: 3px double #eee;
             margin: 0 10px;
+            position: relative;
+        }
+
+        .calendar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            z-index: 0;
         }
 
         .calendar-records {
-            background-color: #fff;
             margin: 0 -10px;
             border-radius: 20px 20px 0 0;
-            overflow: hidden;
             flex: 1;
             position: relative;
-            z-index: 1;
+        }
+
+        .calendar-records::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            z-index: 0;
         }
 
         .weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             margin-bottom: 12px;
+            position: relative;
+            z-index: 2;
         }
 
         .weekday {
@@ -104,6 +125,8 @@
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 4px;
+            position: relative;
+            z-index: 2;
         }
 
         .day {
@@ -136,6 +159,7 @@
             margin-top: 0;
             margin-left: 10px;
             margin-right: 10px;
+            z-index: 2;
         }
 
         .records::before {
@@ -594,7 +618,7 @@
                     mask_div.style.left = x + 'px';
                     mask_div.style.top = y + 'px';
                     mask_div.style.overflow = "hidden";
-                    mask_div.style.zIndex = "-1";
+                    mask_div.style.zIndex = "1";
                     mask_div.style.pointerEvents = 'none';
                     mask_div.style.opacity = defaultSettings.watermark_alpha;
                     mask_div.style.fontSize = defaultSettings.watermark_fontsize;
@@ -607,7 +631,7 @@
                     oTemp.appendChild(mask_div);
                 };
             };
-            document.body.appendChild(oTemp);
+            document.querySelector('.app').appendChild(oTemp);
         }
 
         window.onload = init;
